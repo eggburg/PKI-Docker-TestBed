@@ -1,3 +1,4 @@
+# Usage
 ## Clone the repository
 ```
 git clone https://github.com/eggburg/PKI-TestBed.git
@@ -58,3 +59,9 @@ C = US, L = San Jose, CN = leaf_revoked_cn
 error 23 at 0 depth lookup: certificate revoked
 error server_cert: verification failed
 ```
+
+
+# Future plan
+Add DNS server container to the testbed
+
+
