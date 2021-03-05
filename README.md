@@ -63,6 +63,6 @@ error server_cert: verification failed
 
 # Future plans
 - Add DNS server container to the testbed
-- Add other SSL servers like apache or NGINX
+- Add differnet types of SSL server like apache or NGINX
 
 
