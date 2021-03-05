@@ -61,7 +61,8 @@ error server_cert: verification failed
 ```
 
 
-# Future plan
-Add DNS server container to the testbed
+# Future plans
+- Add DNS server container to the testbed
+- Add other SSL servers like apache or NGINX
 
 
