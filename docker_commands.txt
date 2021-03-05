@@ -52,7 +52,7 @@ To fetch the CRL from CRL distribution point from the HOST (connect to port 9999
 
 To connect the tls server from the tls client container
 
-	cf@cf-VirtualBox:~/tls-testbed/certs$ docker exec -it tls_client_container bash
+    cf@cf-VirtualBox:~/tls-testbed/certs$ docker exec -it tls_client_container bash
     
     bash-5.1# openssl s_client -connect tls.server.good:12345 -CAfile certs/root_intermediate.crt -status
     bash-5.1# openssl s_client -connect 172.18.0.55:12345 -CAfile certs/root_intermediate.crt -status
@@ -63,7 +63,7 @@ To connect the tls server from the tls client container
 
 To fetch the CRL from CRL distribution point from the tls client container (connect to port 80)
 
-	bash-5.1# curl http://crl.pki.eggburger:80/myCrlFile.pem
+    bash-5.1# curl http://crl.pki.eggburger:80/myCrlFile.pem
     -----BEGIN X509 CRL-----
     MIIBxTCBrgIBATANBgkqhkiG9w0BAQsFADA6MQswCQYDVQQGEwJVUzERMA8GA1UE
     BwwIU2FuIEpvc2UxGDAWBgNVBAMMD2ludGVybWVkaWF0ZV9jbhcNMjEwMzAzMDgw
@@ -92,3 +92,26 @@ To fetch the CRL from CRL distribution point from the tls client container (conn
     UKoTmb22HrxRdOlO0I+1aTaclHb/G1Y1JY8Xviiy5KD5XZSzVXBCW1Ban3w6JfVt
     BxhSazDK+KWUAeABHPkG/UzchSdkYFJSuA==
     -----END X509 CRL-----
+
+
+
+
+// Fetch CRL
+# curl -s http://crl.pki.eggburger/myCrlFile.pem > crl.pem
+# cat certs/root_intermediate.crt crl.pem > crl_chain.pem
+
+
+// Fetch good server cert and verify it against the CRL
+
+# openssl s_client -showcerts -connect tls.server.good:12345 2>/dev/null </dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > good_server_certs
+# openssl verify -crl_check -CAfile crl_chain.pem good_server_certs
+good_server_certs: OK
+
+
+// Fetch revoked server cert and verify it against the CRL
+
+# openssl s_client -showcerts -connect tls.server.revoked:54321 2>/dev/null </dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > revoked_server_certs
+# openssl verify -crl_check -CAfile crl_chain.pem revoked_server_certs 
+C = US, L = San Jose, CN = leaf_revoked_cn
+error 23 at 0 depth lookup: certificate revoked
+error server_cert: verification failed
