@@ -1,0 +1,79 @@
+
+To generate root cert/key
+    openssl req -x509 -keyout root.key -out root.crt -days 3650 -nodes -subj '/C=US/L=San Jose/CN=root_cn'
+
+
+To generate intermediate key/csr/cert
+    $ cat extfile_for_ca_cert
+    basicConstraints=CA:TRUE
+
+    openssl req -new -nodes -addext basicConstraints=CA:TRUE -keyout intermediate.key -out intermediate.csr -subj '/C=US/L=San Jose/CN=intermediate_cn' && openssl x509 -req -days 3650 -in intermediate.csr -CA root.crt -CAkey root.key -set_serial 0x11111111 -out intermediate.crt -extfile extfile_for_ca_cert
+
+To generate CA chain:
+    cat root.crt intermediate.crt > root_intermediate.crt
+
+
+To generate leaf key/csr/cert
+    $ cat extfile_for_leaf_cert
+        authorityInfoAccess = OCSP;URI:http://ocsp.pki.eggburger:8888
+        crlDistributionPoints = URI:http://crl.pki.eggburger:80/myCrlFile.pem
+
+    To generate revoked status leaf key/csr/cert
+        openssl req -new -nodes -out leaf_revoked.csr -keyout leaf_revoked.key -subj '/C=US/L=San Jose/CN=leaf_revoked_cn' && openssl x509 -req -days 3650 -in leaf_revoked.csr -CA intermediate.crt -CAkey intermediate.key -set_serial 0xAAAAAAAA -out leaf_revoked.crt -extfile extfile_for_leaf_cert
+
+    To generate good status leaf key/csr/cert
+        openssl req -new -nodes -out leaf_good.csr -keyout leaf_good.key -subj '/C=US/L=San Jose/CN=leaf_good_cn' && openssl x509 -req -days 3650 -in leaf_good.csr -CA intermediate.crt -CAkey intermediate.key -set_serial 0x99999999 -out leaf_good.crt -extfile extfile_for_leaf_cert
+
+
+To generate CRL
+    $ openssl ca -gencrl -keyfile intermediate.key -cert intermediate.crt -out myCrlFile.pem -config crl_openssl.cnf
+    Using configuration from crl_openssl.cnf
+
+
+To convert CRL from PEM to DER
+    $ openssl crl -inform PEM -in myCrlFile.pem -outform DER -out myCrlFile.der
+
+
+To generate OCSP responder key/csr/cert
+    $ cat extfile_for_ocsp_responder_cert
+    basicConstraints = CA:FALSE
+    keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+    extendedKeyUsage = OCSPSigning
+
+    openssl req -new -nodes -out ocsp_responder.csr -keyout ocsp_responder.key -subj '/C=US/L=San Jose/CN=ocsp_responder_cn' -addext basicConstraints=CA:FALSE -addext keyUsage=nonRepudiation,digitalSignature,keyEncipherment -addext extendedKeyUsage=OCSPSigning && openssl x509 -req -days 3650 -in ocsp_responder.csr -CA intermediate.crt -CAkey intermediate.key -set_serial 0x1E -out ocsp_responder.crt -extfile extfile_for_ocsp_responder_cert
+
+
+To start OCSP responder (from session 1)
+    $ openssl ocsp -index index.txt -port 8888 -rsigner ocsp_responder.crt -rkey ocsp_responder.key -CA intermediate.crt -text
+    (optional) add "-out log.txt" for printing logs on a log file
+
+
+To test send OCSP request (from session 2)
+
+    Test status good cert:
+        $ openssl ocsp -CAfile root_intermediate.crt -issuer intermediate.crt -cert leaf_good.crt -url http://0.0.0.0:8888
+        Response verify OK
+        leaf_good.crt: good
+            This Update: Feb 28 08:58:01 2021 GMT
+
+    Test status revoked cert:
+        $ openssl ocsp -CAfile root_intermediate.crt -issuer intermediate.crt -cert leaf_revoked.crt -url http://0.0.0.0:8888
+        Response verify OK
+        leaf_revoked.crt: revoked
+            This Update: Feb 28 08:58:08 2021 GMT
+            Revocation Time: Jun 14 04:22:49 2019 GMT
+
+
+
+
+
+
+
+To start TLS server that uses status good leaf cert and support ocsp stapling
+    cf@cf-VirtualBox:~/tls-testbed/certs$ openssl s_server -accept 12345 -cert leaf_good.crt -key leaf_good.key -CAfile root_intermediate.crt -status -www
+
+To connect the TLS server from TLS client and request OCSP stapling
+    cf@cf-VirtualBox:~/tls-testbed/certs$ openssl s_client -connect 0.0.0.0:12345 -CAfile root_intermediate.crt -status
+
+
+

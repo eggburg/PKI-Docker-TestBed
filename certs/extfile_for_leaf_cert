@@ -1,0 +1,2 @@
+authorityInfoAccess = OCSP;URI:http://ocsp.pki.eggburger:8888
+crlDistributionPoints = URI:http://crl.pki.eggburger:80/myCrlFile.pem

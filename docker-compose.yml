@@ -1,0 +1,86 @@
+version: "3"
+services:
+  ocsp_responder:
+    container_name: ocsp_responder_container
+    image: ocsp_responder_image
+    build:
+      context: .
+      dockerfile: Dockerfile_ocsp
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.88
+    ports:
+      - 8888:8888
+
+  # httpd http server
+  crl_distribution_point:    
+    container_name: crl_distribution_point_container
+    image: httpd:2.4
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.99
+    ports:
+      - 9999:80
+    volumes:
+      - ./certs/:/usr/local/apache2/htdocs/:ro
+
+  tls_server_revoked_cert:
+    container_name: tls_server_revoked_cert_container
+    image: tls_server_revoked_cert_image
+    build:
+      context: .
+      dockerfile: Dockerfile_tls_server_revoked_cert
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.44
+    ports:
+      - 54321:54321
+    extra_hosts:
+      ocsp.pki.eggburger: 172.18.0.88
+    depends_on:
+      - ocsp_responder
+
+  tls_server_good_cert:
+    container_name: tls_server_good_cert_container
+    image: tls_server_good_cert_image
+    build:
+      context: .
+      dockerfile: Dockerfile_tls_server_good_cert
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.55
+    ports:
+      - 12345:12345
+    extra_hosts:
+      ocsp.pki.eggburger: 172.18.0.88
+    depends_on:
+      - ocsp_responder
+
+  tls_client:
+    container_name: tls_client_container
+    image: tls_client_image
+    build:
+      context: .
+      dockerfile: Dockerfile_tls_client
+    networks:
+      mynet:
+        ipv4_address: 172.18.0.66
+    extra_hosts:
+      tls.server.revoked: 172.18.0.44
+      tls.server.good: 172.18.0.55
+      ocsp.pki.eggburger: 172.18.0.88
+      crl.pki.eggburger: 172.18.0.99
+    depends_on:
+      - ocsp_responder
+      - crl_distribution_point
+      - tls_server_good_cert
+      - tls_server_revoked_cert      
+    tty: true    # keep container running
+
+networks:
+  mynet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.0.0/16

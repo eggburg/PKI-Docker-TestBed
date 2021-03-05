@@ -1,0 +1,6 @@
+R	270811051940Z	170813052002Z	88888888	unknown	/C=US/L=RQ_city/O=RQ_org/CN=RQ_leaf8_cn/emailAddress=RQ_leaf8@email.com
+V	290518021306Z		1E	unknown	/C=US/L=Default City/O=Default Company Ltd/CN=cn_ocsp_server/emailAddress=cn_ocsp_server@email.com
+V	290518055333Z		99999999	unknown	/C=US/L=Default City/O=Default Company Ltd/CN=cn_km_leaf/emailAddress=cn_km_leaf@email.com
+R	290611041843Z	190614042249Z	AAAAAAAA	unknown	/C=US/L=Default City/O=Default Company Ltd/CN=cn_leaf_revoked/emailAddress=cn_leaf_revoked@email.com
+V	290813214215Z		AAAAAAAB	unknown	/C=US/L=Default City/O=Default Company Ltd/CN=cn_test
+V	290813215950Z		AAAAAAAC	unknown	/C=US/ST=CA/L=San Jose/O=F5 Networks/OU=Product Development/CN=SSL Core Testing

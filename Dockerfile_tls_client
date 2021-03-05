@@ -1,0 +1,10 @@
+FROM alpine:3.13
+
+RUN apk --update add --no-cache openssl vim curl bash
+
+RUN mkdir -p /my_app
+
+WORKDIR /my_app
+
+COPY . .
+
