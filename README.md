@@ -78,4 +78,5 @@ error server_cert: verification failed
 
   For now the SSL server is run by openssl command
 
+- Add scripts to capture packets while running the tests
 
