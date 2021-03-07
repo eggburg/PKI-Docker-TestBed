@@ -23,7 +23,6 @@ To test send OCSP request (from session 2)
 To start TLS server that uses status good leaf cert and support ocsp stapling
     cf@cf-VirtualBox:~/tls-testbed/certs$ openssl s_server -accept 12345 -cert leaf_good.crt -key leaf_good.key -CAfile root_intermediate.crt -status -www
 
-
 To connect the TLS server from TLS client and request OCSP stapling
     cf@cf-VirtualBox:~/tls-testbed/certs$ openssl s_client -connect 0.0.0.0:12345 -CAfile root_intermediate.crt -status
 
