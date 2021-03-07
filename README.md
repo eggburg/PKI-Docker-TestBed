@@ -1,5 +1,5 @@
 # Containers Deployment
-The setup includes 5 containers. They are 
+The setup involves 5 containers. They are 
 - an OCSP responder
 - a CRL distribution point
 - a SSL client
