@@ -38,11 +38,13 @@ Send SSL connection to the SSL server 1, the one that is using the good cert
 ```
 bash-5.1# openssl s_client -connect tls.server.good:12345 -CAfile certs/root_intermediate.crt -status
 ```
+You should be able to see the OCSP stapling request from the SSL client, and "Cert Status: good" in the OCSP response data sent from the SSL server.
 
 Send SSL connection to the SSL server 2, the one that is using the revoked cert
 ```
 bash-5.1# openssl s_client -connect tls.server.revoked:54321 -CAfile certs/root_intermediate.crt -status
 ```
+You should be able to see the OCSP stapling request from the SSL client, and "Cert Status: revoked" in the OCSP response data sent from the SSL server.
 
 ### Test CRL
 Fetch CRL from the CRL distribution point, and use it to generate the crl chain file.
@@ -55,7 +57,7 @@ Fetch the good server's cert and verify it against the CRL
 ```
 bash-5.1# openssl s_client -showcerts -connect tls.server.good:12345 2>/dev/null </dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > good_server_certs
 bash-5.1# openssl verify -crl_check -CAfile crl_chain.pem good_server_certs
-good_server_certs: OK
+good_server_certs: OK   <===== good status based on the CRL
 ```
 
 Fetch the revoked server cert and verify it against the CRL
@@ -63,7 +65,7 @@ Fetch the revoked server cert and verify it against the CRL
 bash-5.1# openssl s_client -showcerts -connect tls.server.revoked:54321 2>/dev/null </dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > revoked_server_certs
 bash-5.1# openssl verify -crl_check -CAfile crl_chain.pem revoked_server_certs 
 C = US, L = San Jose, CN = leaf_revoked_cn
-error 23 at 0 depth lookup: certificate revoked
+error 23 at 0 depth lookup: certificate revoked  <===== revoked status based on the CRL
 error server_cert: verification failed
 ```
 
