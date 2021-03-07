@@ -1,5 +1,9 @@
 # Containers Deployment
-The setup includes 5 containers. They are an OCSP responder, a CRL distribution point, a SSL client, and 2 SSL servers using good and revoked cert respectively.
+The setup includes 5 containers. They are 
+- an OCSP responder
+- a CRL distribution point
+- a SSL client
+- 2 SSL servers using good and revoked cert respectively.
 ![Alt text](images/containers-deployment.png)
 
 # Signing Relation
