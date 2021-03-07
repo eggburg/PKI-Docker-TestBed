@@ -8,8 +8,8 @@
 # Usage
 ## Clone the repository
 ```
-git clone https://github.com/eggburg/PKI-TestBed.git
-cd PKI-TestBed/
+git clone https://github.com/eggburg/PKI-Docker-TestBed.git
+cd PKI-Docker-TestBed/
 ```
 
 ## (Optional) Regenerate the certs and CRL file
