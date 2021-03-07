@@ -33,7 +33,7 @@ Remark: if you want to run it in the background without printing logs, run "dock
 
 ## Test from the SSL client container
 
-Enter the SSL client container.
+Access the SSL client container.
 ```
 $ docker exec -it tls_client_container bash
 ```
