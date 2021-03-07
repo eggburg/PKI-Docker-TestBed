@@ -11,19 +11,19 @@ The setup involves 5 containers. They are
 
 
 # Deploy the Testbed
-## Clone the repository
+### Clone the repository
 ```
 git clone https://github.com/eggburg/PKI-Docker-TestBed.git
 cd PKI-Docker-TestBed/
 ```
 
-## (Optional) Regenerate the certs and CRL file
+### (Optional) Regenerate the certs and CRL file
 
 ```
 ./regen_certs.sh
 ```
 
-## Bring up the testbed environment
+### Bring up the testbed environment
 
 ```
 docker-compose up
