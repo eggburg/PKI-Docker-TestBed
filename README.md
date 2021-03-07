@@ -10,7 +10,7 @@ The setup involves 5 containers. They are
 ![Alt text](images/signing-relation.png)
 
 
-# Usage
+# Deploy the Testbed
 ## Clone the repository
 ```
 git clone https://github.com/eggburg/PKI-Docker-TestBed.git
@@ -31,14 +31,14 @@ docker-compose up
 Remark: if you want to run it in the background without printing logs, run "docker-compose up -d" instead
 
 
-## Test from the SSL client container
+# Test from the SSL client container
 
-Access the SSL client container.
+### To access the SSL client container.
 ```
 $ docker exec -it tls_client_container bash
 ```
 
-### Send SSL connection to SSL server with OCSP stapling request
+### To send SSL connection to SSL server with OCSP stapling request
 Send SSL connection to the SSL server 1, the one that is using the good cert
 ```
 bash-5.1# openssl s_client -connect tls.server.good:12345 -CAfile certs/root_intermediate.crt -status
@@ -51,7 +51,7 @@ bash-5.1# openssl s_client -connect tls.server.revoked:54321 -CAfile certs/root_
 ```
 You should be able to see the OCSP stapling request from the SSL client, and "Cert Status: revoked" in the OCSP response data sent from the SSL server.
 
-### Test CRL
+### To test CRL
 Fetch CRL from the CRL distribution point, and use it to generate the crl chain file.
 ```
 bash-5.1# curl -s http://crl.pki.eggburger/myCrlFile.pem > crl.pem
