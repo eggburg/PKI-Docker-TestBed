@@ -81,7 +81,7 @@ error server_cert: verification failed
   For now we are resolving domain names by specifying "extra_hosts" in the docker-compose.yml file
 - Add differnet types of SSL server like apache or NGINX
 
-  For now the SSL server is run by openssl command
+  For now the SSL servers are run by openssl commands
 
 - Add scripts to capture the packets while running the tests
 
