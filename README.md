@@ -34,12 +34,12 @@ $ docker exec -it tls_client_container bash
 ```
 
 ### Test SSL handshake with OCSP stapling
-Send SSL connection to the SSL server that is using good certificate
+Send SSL connection to the SSL server 1, the one that is using the good cert
 ```
 bash-5.1# openssl s_client -connect tls.server.good:12345 -CAfile certs/root_intermediate.crt -status
 ```
 
-Send SSL connection to the SSL server that is using good certificate
+Send SSL connection to the SSL server 2, the one that is using the revoked cert
 ```
 bash-5.1# openssl s_client -connect tls.server.revoked:54321 -CAfile certs/root_intermediate.crt -status
 ```
