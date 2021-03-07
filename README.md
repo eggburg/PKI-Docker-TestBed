@@ -1,5 +1,5 @@
 # Containers Deployment
-
+![Alt text](images/containers-deployment.png)
 
 
 # Usage
