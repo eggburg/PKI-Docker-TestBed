@@ -75,7 +75,7 @@ error server_cert: verification failed
 ```
 
 
-# Future plans
+# Enhancement Ideas
 - Add DNS server container to the testbed
 
   For now we are resolving domain names by specifying "extra_hosts" in the docker-compose.yml file
