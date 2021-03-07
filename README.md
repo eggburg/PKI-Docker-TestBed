@@ -33,7 +33,7 @@ Enter the SSL client container.
 $ docker exec -it tls_client_container bash
 ```
 
-#### Send SSL connection to SSL server with OCSP stapling request
+### Send SSL connection to SSL server with OCSP stapling request
 Send SSL connection to the SSL server 1, the one that is using the good cert
 ```
 bash-5.1# openssl s_client -connect tls.server.good:12345 -CAfile certs/root_intermediate.crt -status
@@ -46,7 +46,7 @@ bash-5.1# openssl s_client -connect tls.server.revoked:54321 -CAfile certs/root_
 ```
 You should be able to see the OCSP stapling request from the SSL client, and "Cert Status: revoked" in the OCSP response data sent from the SSL server.
 
-#### Test CRL
+### Test CRL
 Fetch CRL from the CRL distribution point, and use it to generate the crl chain file.
 ```
 bash-5.1# curl -s http://crl.pki.eggburger/myCrlFile.pem > crl.pem
