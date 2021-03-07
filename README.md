@@ -33,7 +33,7 @@ Enter the SSL client container.
 $ docker exec -it tls_client_container bash
 ```
 
-### Test SSL handshake with OCSP stapling
+### Send SSL connection to SSL server with OCSP stapling request
 Send SSL connection to the SSL server 1, the one that is using the good cert
 ```
 bash-5.1# openssl s_client -connect tls.server.good:12345 -CAfile certs/root_intermediate.crt -status
