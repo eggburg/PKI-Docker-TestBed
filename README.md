@@ -1,5 +1,5 @@
 # Containers Deployment
-The setup involves 5 containers. They are 
+This testbed involves 5 containers. They are 
 - an OCSP responder
 - a CRL distribution point
 - a SSL client
