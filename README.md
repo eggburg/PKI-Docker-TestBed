@@ -4,7 +4,7 @@ The setup involves 5 containers. They are
 - a CRL distribution point
 - a SSL client
 - 2 SSL servers using good and revoked cert respectively.
-![Alt text](images/containers-deployment.png)
+![Alt text](images/container-deployment.png)
 
 # Signing Relation
 ![Alt text](images/signing-relation.png)
