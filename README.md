@@ -12,7 +12,7 @@ git clone https://github.com/eggburg/PKI-TestBed.git
 cd PKI-TestBed/
 ```
 
-## Regenerate the certs and CRL file (optional)
+## (Optional) Regenerate the certs and CRL file
 
 ```
 ./regen_certs.sh
