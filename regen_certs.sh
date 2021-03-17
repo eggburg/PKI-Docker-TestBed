@@ -10,7 +10,7 @@ eval `openssl req -x509 -keyout root.key -out root.crt -days 3650 -nodes \
 		-subj '/C=US/L=San Jose/CN=root_cn'`
 
 echo "====================================================="
-echo "Generating root intermediate key/csr/cert"
+echo "Generating intermediate key/csr/cert"
 eval `openssl req -new -nodes -addext basicConstraints=CA:TRUE \
 		-keyout intermediate.key -out intermediate.csr \
 		-subj '/C=US/L=San Jose/CN=intermediate_cn' && openssl x509 -req \
