@@ -76,6 +76,8 @@ error server_cert: verification failed
 
 
 # Enhancement Ideas
+- Add scripts in the SSL client container to rul all the test cases and verify the results automatically.
+
 - Add DNS server container to the testbed
 
   For now we are resolving domain names by specifying "extra_hosts" in the docker-compose.yml file
