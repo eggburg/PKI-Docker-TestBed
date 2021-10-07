@@ -76,7 +76,7 @@ error server_cert: verification failed
 
 
 # Enhancement Ideas
-- Add scripts in the SSL client container to rul all the test cases and verify the results automatically.
+- Add scripts in the SSL client container to run all the test cases and verify the results automatically.
 
 - Add DNS server container to the testbed
 
