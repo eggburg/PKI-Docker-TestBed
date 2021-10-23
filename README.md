@@ -87,5 +87,5 @@ error server_cert: verification failed
 
 - Add scripts to capture the packets while running the tests
 
-- For negative testing: xpired CRL, un-routable OCSP responder or CRL distribution point
+- For negative testing: expired CRL, un-routable OCSP responder or CRL distribution point
 
